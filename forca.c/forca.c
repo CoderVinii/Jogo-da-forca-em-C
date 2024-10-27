@@ -1,17 +1,17 @@
 #include <stdio.h>
 #include <string.h>
 
-    char palavrasecreta[20];
-    char chutes[26];
-    int tentativas = 0;
+char palavrasecreta[20];
+char chutes[26];
+int tentativas = 0;
 
 void abertura() {
     printf("/****************/\n");
-	printf("/ Jogo de Forca */\n");
-	printf("/****************/\n\n");
+    printf("/ Jogo de Forca */\n");
+    printf("/****************/\n\n");
 }
 
-void chuta(char chutes[]) {
+void chuta() {
     char chute;
     printf("Qual a letra? ");
     scanf(" %c", &chute);
@@ -21,24 +21,18 @@ void chuta(char chutes[]) {
 }
 
 int jachutou(char letra) {
-    int achou = 0;
     for(int j = 0; j < tentativas; j++) {
         if(chutes[j] == letra) {
-            achou = 1;
-            break;
+            return 1;
         }
     }
-
-    return achou;
-
+    return 0;
 }
 
 void desenhaforca() {
-    
     printf("Voce ja deu %d chutes\n", tentativas);
 
     for(int i = 0; i < strlen(palavrasecreta); i++) {
-        
         if(jachutou(palavrasecreta[i])) {
             printf("%c ", palavrasecreta[i]);
         } else {
@@ -49,21 +43,36 @@ void desenhaforca() {
 }
 
 void escolhepalavra() {
-    sprintf(palavrasecreta, "MELANCIA");
+    strcpy(palavrasecreta, "MELANCIA");
+}
+
+int acertou() {
+    for(int i = 0; i < strlen(palavrasecreta); i++) {
+        if(!jachutou(palavrasecreta[i])) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int enforcou() {
+    return tentativas >= 5;
 }
 
 int main() {
-
-    int acertou = 0;
-    int enforcou = 0;
-
     escolhepalavra();
     abertura();
 
     do {
         desenhaforca();
-        chute();
+        chuta();
+    } while (!acertou() && !enforcou());
 
-    } while (!acertou && ! enforcou);
+    if(acertou()) {
+        printf("Parabéns, você ganhou!\n");
+    } else {
+        printf("Voce foi enforcado! A palavra era %s\n", palavrasecreta);
+    }
 
+    return 0;
 }
