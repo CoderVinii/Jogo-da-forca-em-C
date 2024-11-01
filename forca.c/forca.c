@@ -4,7 +4,7 @@
 #include <string.h>
 #include "forca.h"
 
-char palavrasecreta[20];
+char palavrasecreta[TAMANHO_PALAVRA];
 char chutes[26];
 int chutesdados = 0;
 
@@ -27,8 +27,16 @@ void chuta()
 
 void desenhaforca()
 {
-
-    printf("Você já deu %d chutes\n", chutesdados);
+    int erros;
+    printf("  _______       \n");
+    printf(" |/      |      \n");
+    printf(" |      (_)     \n");
+    printf(" |      \\|/    \n");
+    printf(" |       |      \n");
+    printf(" |      / \\    \n");
+    printf(" |              \n");
+    printf("_|___           \n");
+    printf("\n\n");
 
     for (int i = 0; i < strlen(palavrasecreta); i++)
     {
@@ -56,7 +64,7 @@ void adicionapalavra()
     if (quer == 'S')
     {
 
-        char novapalavra[20];
+        char novapalavra[TAMANHO_PALAVRA];
         printf("Qual a nova palavra? ");
         scanf("%s", novapalavra);
 
@@ -81,7 +89,7 @@ void adicionapalavra()
 
         fclose(f);
     }
-}
+} 
 
 void escolhepalavra()
 {
@@ -122,10 +130,8 @@ int acertou()
     return 1;
 }
 
-int enforcou()
-{
-
-    int erros = 0;
+int chuteserrados() {
+        int erros = 0;
 
     for (int i = 0; i < chutesdados; i++)
     {
@@ -141,11 +147,16 @@ int enforcou()
             }
         }
 
-        if (!existe)
-            erros++;
+        if (!existe) erros++;
     }
 
-    return erros >= 5;
+   return erros;
+}
+
+int enforcou()
+{
+
+    return chuteserrados() >=5;
 }
 
 int jachutou(char letra)
@@ -176,4 +187,10 @@ int main()
         chuta();
 
     } while (!acertou() && !enforcou());
+
+    if(acertou()) {
+    printf("\nParabens voce ganhou!\n\n");
+    } else {
+    printf("\nVoce foi enforcad!\n");
+    }
 }
