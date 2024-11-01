@@ -45,11 +45,43 @@ void desenhaforca()
     printf("\n");
 }
 
+void adicionapalavra() {
+
+    char quer;
+     
+     printf("Voce deseja adicionar uma nova palavra no jogo? (S/N)");
+     scanf(" %c", &quer);
+     
+    if(quer == 'S') {
+
+        char novapalavra[20];
+        printf("Qual a nova palavra? ");
+        scanf("%s", novapalavra);
+
+        FILE* f;
+
+        f = fopen("palavras.txt", "r+");
+
+        int qtd;
+        fscanf(f, "%d", &qtd);
+        qtd++;
+
+        fprintf(f, "\n%s", novapalavra);
+
+        fclose(f);
+    }
+     
+}
+
 void escolhepalavra()
 {
     FILE* f;
 
    f = fopen("palavras.txt", "r");
+   if(f == 0) {
+    printf("Desculpe, o banco de dados nao esta disponivel\n\n");
+    exit(1);
+   }
 
    int qtddepalavras;
    fscanf(f, "%d", &qtddepalavras);
